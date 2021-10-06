@@ -24,7 +24,7 @@ im_wltextinputv1_la_LIBADD = $(GTK3_LIBS)
 im_wltextinputv1_la_SOURCES = \
 	$(protocol_built_sources) \
 	gtkimcontextwayland.c gtkimcontextwayland.h \
-	imwayland.c
+	im-wltextinputv1.c
 
 wayland-text-input-unstable-v1-protocol.c : $(WAYLAND_PROTOCOLS_DATADIR)/unstable/text-input/text-input-unstable-v1.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@

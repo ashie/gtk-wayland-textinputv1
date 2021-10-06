@@ -1,5 +1,6 @@
 /* GTK - The GIMP Toolkit
  * Copyright (C) 2013, 2017 Jan Arne Petersen
+ * Copyright (C) 2021 Takuro Ashie <ashie@clear-code.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,9 +21,9 @@
 
 static const GtkIMContextInfo wayland_im_info =
 {
-  "wayland",
-  "Wayland Input Method",
-  "wayland",
+  "wltextinputv1",
+  "Wayland text-input-untable-v1",
+  "wltextinputv1",
   "",
   "*"
 };
