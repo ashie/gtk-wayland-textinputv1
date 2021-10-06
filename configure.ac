@@ -3,8 +3,8 @@
 
 dnl Process this file with autoconf to produce a configure script.
 m4_define([gtk_wltextinputv1_major_version], [0])
-m4_define([gtk_wltextinputv1_minor_version], [0])
-m4_define([gtk_wltextinputv1_micro_version], [1])
+m4_define([gtk_wltextinputv1_minor_version], [1])
+m4_define([gtk_wltextinputv1_micro_version], [0])
 m4_define([gtk_wltextinputv1_version],
     gtk_wltextinputv1_major_version.gtk_wltextinputv1_minor_version.gtk_wltextinputv1_micro_version)
 
