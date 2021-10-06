@@ -57,7 +57,7 @@ G_MODULE_EXPORT void im_module_list(const GtkIMContextInfo ***contexts,
 
 G_MODULE_EXPORT GtkIMContext * im_module_create(const gchar *context_id)
 {
-  if (g_strcmp0 (context_id, "wayland") == 0)
+  if (g_strcmp0 (context_id, "wltextinputv1") == 0)
     return gtk_im_context_wayland_new ();
   else
     return NULL;
