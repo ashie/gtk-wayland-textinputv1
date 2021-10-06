@@ -197,11 +197,15 @@ update_text_input_state (GtkIMContextWayland *self)
   GtkInputHints hints;
   GtkInputPurpose purpose;
 
-  zwp_text_input_v1_set_cursor_rectangle (priv->text_input,
-                                          priv->cursor_rectangle.x,
-                                          priv->cursor_rectangle.y,
-                                          priv->cursor_rectangle.width,
-                                          priv->cursor_rectangle.height);
+  if (priv->window) {
+    cairo_rectangle_int_t rect = priv->cursor_rectangle;
+    gdk_window_get_root_coords (priv->window,
+                                rect.x, rect.y,
+                                &rect.x, &rect.y);
+    zwp_text_input_v1_set_cursor_rectangle (priv->text_input,
+                                            rect.x, rect.y,
+                                            rect.width, rect.height);
+  }
 
   if (gtk_im_context_get_surrounding (GTK_IM_CONTEXT (self),
                                       &surrounding,
