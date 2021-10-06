@@ -11,17 +11,17 @@ BUILT_SOURCES = $(protocol_built_sources)
 EXTRA_DIST = $(protocol_built_sources)
 
 if HAVE_GTK3
-im_gtkwltextinputv1_LTLIBRARIES = im-gtkwltextinputv1.la
+im_wltextinputv1_LTLIBRARIES = im-wltextinputv1.la
 endif
 
-im_gtkwltextinputv1dir = $(GTK3_IM_MODULEDIR)
+im_wltextinputv1dir = $(GTK3_IM_MODULEDIR)
 
-im_gtkwltextinputv1_la_CFLAGS = \
+im_wltextinputv1_la_CFLAGS = \
 	$(GTK3_CFLAGS)
-im_gtkwltextinputv1_la_LDFLAGS = \
-	-rpath $(im_gtkwltextinputv1dir) -avoid-version -module $(no_undefined)
-im_gtkwltextinputv1_la_LIBADD = $(GTK3_LIBS)
-im_gtkwltextinputv1_la_SOURCES = \
+im_wltextinputv1_la_LDFLAGS = \
+	-rpath $(im_wltextinputv1dir) -avoid-version -module $(no_undefined)
+im_wltextinputv1_la_LIBADD = $(GTK3_LIBS)
+im_wltextinputv1_la_SOURCES = \
 	$(protocol_built_sources) \
 	gtkimcontextwayland.c gtkimcontextwayland.h \
 	imwayland.c
