@@ -110,5 +110,5 @@ AC_OUTPUT
 AC_MSG_RESULT([
 Configure result:
 
-  GTK+3: ${have_gtk3}
+  GTK3: ${have_gtk3}
 ])
