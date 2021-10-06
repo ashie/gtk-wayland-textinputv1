@@ -8,10 +8,10 @@ m4_define([gtk_wltextinputv1_micro_version], [1])
 m4_define([gtk_wltextinputv1_version],
     gtk_wltextinputv1_major_version.gtk_wltextinputv1_minor_version.gtk_wltextinputv1_micro_version)
 
-AC_INIT([gtk_wltextinputv1],
+AC_INIT([gtk-wayland-textinputv1],
         [gtk_wltextinputv1_version],
         [https://github.com/ashie/gtk-wayland-textinputv1/issues],
-        [gtk_wltextinputv1])
+        [gtk-wayland-textinputv1])
 AC_CONFIG_HEADER([config.h])
 AM_INIT_AUTOMAKE([1.11])
 AM_SILENT_RULES([yes])
