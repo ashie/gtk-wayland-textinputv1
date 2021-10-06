@@ -72,6 +72,27 @@ dnl
 dnl
 dnl Checks for library functions.
 dnl
+m4_define([wayland_required_version], [1.13.0])
+m4_define([wayland_protocols_required_version], [1.10])
+
+AC_PATH_PROG(
+  [WAYLAND_SCANNER],
+  [wayland-scanner],
+  [no])
+if test "x$WAYLAND_SCANNER" = "xno"; then
+  AC_MSG_ERROR([Could not find wayland-scanner])
+fi
+AC_SUBST([WAYLAND_SCANNER])
+
+PKG_CHECK_EXISTS(
+  [wayland-client >= wayland_required_version
+   wayland-protocols >= wayland_protocols_required_version],
+  [have_wayland_deps=yes],
+  [have_wayland_deps=no])
+if test "x$have_wayland_deps" = "xno"; then
+  AC_MSG_ERROR([Could not find wayland dependencies])
+fi
+AC_SUBST(WAYLAND_PROTOCOLS_DATADIR, `$PKG_CONFIG --variable=pkgdatadir wayland-protocols`)
 
 
 dnl
