@@ -185,6 +185,8 @@ to_wayland_purpose(GtkInputPurpose purpose) {
             return ZWP_TEXT_INPUT_V1_CONTENT_PURPOSE_PASSWORD;
         case GTK_INPUT_PURPOSE_PIN:
             return ZWP_TEXT_INPUT_V1_CONTENT_PURPOSE_DIGITS;
+        default:
+            return GTK_INPUT_PURPOSE_FREE_FORM;
     }
 }
 
@@ -417,7 +419,6 @@ text_input_keysym (void                     *data,
   GdkDisplay *display;
   GdkSeat *seat;
   GdkEvent *event;
-  struct timespec ts;
   GdkKeymapKey* keys;
   gint n_keys;
 
@@ -653,7 +654,6 @@ gtk_im_context_wayland_filter_keypress (GtkIMContext *context,
                                         GdkEventKey  *event)
 {
   GtkIMContextWayland *self;
-  GtkIMContextWaylandPrivate *priv;
   GdkDisplay *display;
   GdkModifierType no_text_input_mask;
 
@@ -661,7 +661,6 @@ gtk_im_context_wayland_filter_keypress (GtkIMContext *context,
   g_return_val_if_fail (event, FALSE);
 
   self = GTK_IM_CONTEXT_WAYLAND (context);
-  priv = self->priv;
 
   display = gdk_window_get_display (event->window);
 
