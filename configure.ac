@@ -13,7 +13,7 @@ AC_INIT([gtk-wayland-textinputv1],
         [https://github.com/ashie/gtk-wayland-textinputv1/issues],
         [gtk-wayland-textinputv1])
 AC_CONFIG_HEADER([config.h])
-AM_INIT_AUTOMAKE([1.11])
+AM_INIT_AUTOMAKE([1.11 foreign])
 AM_SILENT_RULES([yes])
 
 
