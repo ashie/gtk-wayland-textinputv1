@@ -89,8 +89,11 @@ bind_text_input_manager (gpointer data)
   struct wl_registry *registry;
 
   display = gdk_display_get_default ();
+  g_return_val_if_fail(display, NULL);
   wl_display = gdk_wayland_display_get_wl_display (display);
+  g_return_val_if_fail(wl_display, NULL);
   registry = wl_display_get_registry (wl_display);
+  g_return_val_if_fail(registry, NULL);
   wl_registry_add_listener (registry, &registry_listener, NULL);
   wl_display_dispatch (wl_display);
 
@@ -423,7 +426,9 @@ text_input_keysym (void                     *data,
   gint n_keys;
 
   display = gdk_display_get_default();
+  g_return_if_fail(display);
   seat = gdk_display_get_default_seat (display);
+  g_return_if_fail(seat);
 
   reset_preedit(self);
   g_clear_pointer (&priv->preedit_commit, (GDestroyNotify) g_free);
@@ -568,7 +573,9 @@ gtk_im_context_wayland_focus_in (GtkIMContext *context)
       return;
 
   display = gdk_display_get_default ();
+  g_return_if_fail(display);
   seat = gdk_display_get_default_seat (display);
+  g_return_if_fail(seat);
 
   zwp_text_input_v1_show_input_panel (priv->text_input);
   zwp_text_input_v1_activate (priv->text_input,
@@ -601,7 +608,9 @@ gtk_im_context_wayland_focus_out (GtkIMContext *context)
   g_return_if_fail (self->priv->text_input);
 
   display = gdk_display_get_default ();
+  g_return_if_fail(display);
   seat = gdk_display_get_default_seat (display);
+  g_return_if_fail(seat);
 
   commit_and_reset_preedit (self);
 
@@ -663,6 +672,7 @@ gtk_im_context_wayland_filter_keypress (GtkIMContext *context,
   self = GTK_IM_CONTEXT_WAYLAND (context);
 
   display = gdk_window_get_display (event->window);
+  g_return_val_if_fail(display, FALSE);
 
   no_text_input_mask = gdk_keymap_get_modifier_mask (gdk_keymap_get_for_display (display),
                                                      GDK_MODIFIER_INTENT_NO_TEXT_INPUT);
@@ -697,9 +707,10 @@ gtk_im_context_wayland_init (GtkIMContextWayland *self)
                                             GtkIMContextWaylandPrivate);
 
   ensure_text_input_manager ();
-  if (text_input_manager)
-    self->priv->text_input = zwp_text_input_manager_v1_create_text_input (text_input_manager);
+  g_return_if_fail(text_input_manager);
 
+  self->priv->text_input = zwp_text_input_manager_v1_create_text_input (text_input_manager);
+  g_return_if_fail(self->priv->text_input);
   zwp_text_input_v1_add_listener (self->priv->text_input, &text_input_listener, self);
 }
 
