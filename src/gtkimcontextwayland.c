@@ -522,6 +522,19 @@ static const struct zwp_text_input_v1_listener text_input_listener =
   text_input_text_direction
 };
 
+static void
+ensure_text_input(GtkIMContextWayland *self)
+{
+  if (self->priv->text_input)
+    return;
+  if (!text_input_manager)
+    return;
+  self->priv->text_input = zwp_text_input_manager_v1_create_text_input (text_input_manager);
+  if (!self->priv->text_input)
+    return;
+  zwp_text_input_v1_add_listener (self->priv->text_input, &text_input_listener, self);
+}
+
 GtkIMContext *
 gtk_im_context_wayland_new (void)
 {
@@ -566,7 +579,9 @@ gtk_im_context_wayland_focus_in (GtkIMContext *context)
   struct wl_surface *surface;
 
   g_return_if_fail (GDK_IS_WAYLAND_WINDOW (priv->window));
-  g_return_if_fail (priv->text_input);
+  ensure_text_input(self);
+  if (!priv->text_input)
+    return;
 
   surface = gdk_wayland_window_get_wl_surface (priv->window);
 
@@ -606,7 +621,9 @@ gtk_im_context_wayland_focus_out (GtkIMContext *context)
   GdkSeat *seat;
 
   g_return_if_fail (GDK_IS_WAYLAND_WINDOW (priv->window));
-  g_return_if_fail (self->priv->text_input);
+  ensure_text_input(self);
+  if (!priv->text_input)
+    return;
 
   display = gdk_display_get_default ();
   g_return_if_fail(display);
@@ -615,8 +632,10 @@ gtk_im_context_wayland_focus_out (GtkIMContext *context)
 
   commit_and_reset_preedit (self);
 
-  zwp_text_input_v1_deactivate (priv->text_input,
-                                gdk_wayland_seat_get_wl_seat (seat));
+  if (self->priv->text_input) {
+    zwp_text_input_v1_deactivate (priv->text_input,
+				  gdk_wayland_seat_get_wl_seat (seat));
+  }
 }
 
 static void
@@ -625,7 +644,9 @@ gtk_im_context_wayland_reset (GtkIMContext *context)
   GtkIMContextWayland *self = GTK_IM_CONTEXT_WAYLAND (context);
   GtkIMContextWaylandPrivate *priv = self->priv;
 
-  g_return_if_fail (self->priv->text_input);
+  ensure_text_input(self);
+  if (!priv->text_input)
+    return;
 
   commit_and_reset_preedit (self);
 
@@ -643,14 +664,14 @@ gtk_im_context_wayland_set_cursor_location (GtkIMContext *context,
   GtkIMContextWayland *self = GTK_IM_CONTEXT_WAYLAND (context);
   GtkIMContextWaylandPrivate *priv = self->priv;
 
-  g_return_if_fail (self->priv->text_input);
-
   priv->cursor_rectangle.x = area->x;
   priv->cursor_rectangle.y = area->y;
   priv->cursor_rectangle.width = area->width;
   priv->cursor_rectangle.height = area->height;
 
-  update_text_input_state (self);
+  ensure_text_input(self);
+  if (priv->text_input)
+    update_text_input_state (self);
 }
 
 static void
@@ -706,13 +727,7 @@ gtk_im_context_wayland_init (GtkIMContextWayland *self)
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                             GTK_TYPE_IM_CONTEXT_WAYLAND,
                                             GtkIMContextWaylandPrivate);
-
-  ensure_text_input_manager ();
-  g_return_if_fail(text_input_manager);
-
-  self->priv->text_input = zwp_text_input_manager_v1_create_text_input (text_input_manager);
-  g_return_if_fail(self->priv->text_input);
-  zwp_text_input_v1_add_listener (self->priv->text_input, &text_input_listener, self);
+  ensure_text_input(self);
 }
 
 static void
@@ -757,4 +772,5 @@ void
 gtk_im_context_wayland_register (GTypeModule *type_module)
 {
   gtk_im_context_wayland_register_type (type_module);
+  ensure_text_input_manager();
 }
