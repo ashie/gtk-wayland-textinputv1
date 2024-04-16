@@ -90,6 +90,7 @@ bind_text_input_manager (gpointer data)
 
   display = gdk_display_get_default ();
   g_return_val_if_fail(display, NULL);
+  g_return_val_if_fail(GDK_IS_WAYLAND_DISPLAY(display), NULL);
   wl_display = gdk_wayland_display_get_wl_display (display);
   g_return_val_if_fail(wl_display, NULL);
   registry = wl_display_get_registry (wl_display);
